@@ -6,6 +6,8 @@ from typing import Dict, Type
 
 from python_pipeline.data_generators.ack_generator import AckDataGenerator
 from python_pipeline.data_generators.base_generator import BaseDataGenerator
+from python_pipeline.data_generators.ticker_generator import TickerGenerator
+from python_pipeline.data_generators.trade_generator import TradeGenerator
 
 # Import other generators as they're created
 
@@ -15,6 +17,8 @@ class DataGeneratorFactory:
     # Registry of available generators
     _generators = {
         "ack": AckDataGenerator,
+        "ticker": TickerGenerator,
+        "trade": TradeGenerator,
         # Add more generators as they're implemented
     }
     

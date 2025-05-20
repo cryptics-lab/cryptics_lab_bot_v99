@@ -1,0 +1,79 @@
+[kafka]
+# Connection settings when running inside Docker containers
+bootstrap_servers_internal = "broker0:29092,broker1:29093,broker2:29094"
+schema_registry_url_internal = "http://schema-registry:8081"
+connect_url_internal = "http://kafka-connect:8083"
+
+# Connection settings when running on host machine (outside Docker)
+bootstrap_servers = "localhost:9092"
+schema_registry_url = "http://localhost:8081"
+connect_url = "http://localhost:8083"
+
+# Thalex market maker specific settings
+ack_topic = "cryptics.thalex.ack"
+trade_topic = "cryptics.thalex.trade"
+ticker_topic = "cryptics.thalex.ticker"
+timeout_ms = 5000
+
+topic_partitions = 3
+topic_replicas = 2
+# When true, skips loading local schemas and lets Schema Registry handle schema registration
+skip_local_schemas = true
+
+[topics]
+ticker = "cryptics.thalex.ticker.avro"
+ack = "cryptics.thalex.ack.avro"
+trade = "cryptics.thalex.trade.avro"
+index = "cryptics.thalex.index.avro"
+base_name = "cryptics.thalex"
+
+[database]
+# Connection settings when running inside Docker containers
+host_internal = "timescaledb"
+# Connection settings when running on host machine (outside Docker)
+host = "localhost"
+port = 5432
+name = "cryptics"
+user = "postgres"
+password = "postgres"
+schema = "public"
+
+# Test database settings
+[database.test]
+host_internal = "timescaledb-test"
+host = "localhost"
+port = 5433
+name = "cryptics_test"
+user = "postgres"
+password = "postgres"
+schema = "public"
+
+[app]
+debug = true
+update_seconds = 1.0
+instruments = ["BTC-PERPETUAL"]
+# Only rust_running_in_docker stays in app section
+rust_running_in_docker = true
+
+[pipeline]
+enabled_models = ["ticker", "ack", "trade", "index"]
+clear_tables = true
+# Use predefined schemas from files instead of generating them on-the-fly
+use_schema_files = true
+# Set to true if running inside Docker, false if running on host
+python_running_in_docker = true
+# Set to true to run migrations on startup
+run_migrations = true
+
+# Model-specific configurations
+[pipeline.models.ticker]
+table_name = "ticker_data"
+
+[pipeline.models.ack]
+table_name = "ack_data"
+
+[pipeline.models.trade]
+table_name = "trade_data"
+
+[pipeline.models.index]
+table_name = "index_data"

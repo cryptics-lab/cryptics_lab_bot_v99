@@ -1,0 +1,61 @@
+# Docker Compose Health Checks for CrypticsLabBot
+# Add these health check definitions to your docker-compose.yml services
+
+version: '2'
+services:
+  zk:
+    # ... existing configuration ...
+    healthcheck:
+      test: ["CMD-SHELL", "echo ruok | nc localhost 2181 || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  broker0:
+    # ... existing configuration ...
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server=localhost:9092 --list || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  schema-registry:
+    # ... existing configuration ...
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/subjects || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  kafka-connect:
+    # ... existing configuration ...
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8083/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+
+  timescaledb:
+    # ... existing configuration ...
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  python-pipeline:
+    # ... existing configuration ...
+    depends_on:
+      zk:
+        condition: service_healthy
+      broker0:
+        condition: service_healthy
+      schema-registry:
+        condition: service_healthy
+      timescaledb:
+        condition: service_healthy

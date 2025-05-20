@@ -1,0 +1,51 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*/.pytest_cache
+*.egg-info
+*/*.egg-info
+*/*.egg-info/
+
+# Python virtual environments
+venv/
+env/
+.venv/
+*/venv/*
+
+# Pytest
+*/.coverage/
+
+
+# Rust build artifacts
+/target/
+**/target/
+Cargo.lock
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Images (general exclusion)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+
+# # Explicitly keep specific images
+# !img/data_metrics.png
+# !img/ticker_information.png
+# !img/trading_dashboard_overview.png
+img/*
+
+# Explicitly keep these files
+!.env
+!docker/.env
+!config.toml
+
+
+*/.ruff_cache

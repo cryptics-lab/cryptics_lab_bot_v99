@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""
+Standalone test script for ThalexAck model.
+"""
+
+import os
+import sys
+import unittest
+
+# Make sure our imports work
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
+# Now directly import the model
+from models.ack import ThalexAck, OrderStatus, OrderSide
+
+class ThalexAckTest(unittest.TestCase):
+    """Tests for ThalexAck model"""
+    
+    def test_generate_function(self):
+        """Test the generate function creates valid data"""
+        # Generate a basic ACK instance
+        ack = ThalexAck.generate()
+        print(f"Generated ACK with ID: {ack.order_id}")
+        print(f"Status: {ack.status}")
+        print(f"Direction: {ack.direction}")
+        print(f"Amount: {ack.amount}, Filled: {ack.filled_amount}, Remaining: {ack.remaining_amount}")
+        
+        # Validate fields
+        self.assertIsNotNone(ack.order_id)
+        self.assertIsNotNone(ack.status)
+        self.assertIsNotNone(ack.direction)
+        self.assertGreater(ack.amount, 0)
+        self.assertGreaterEqual(ack.filled_amount, 0)
+        self.assertGreaterEqual(ack.remaining_amount, 0)
+        self.assertAlmostEqual(ack.filled_amount + ack.remaining_amount, ack.amount, places=10)
+    
+    def test_generate_with_params(self):
+        """Test generate function with custom parameters"""
+        # Test with specific status
+        for status_str in ["open", "partially_filled", "filled", "cancelled", "cancelled_partially_filled"]:
+            ack = ThalexAck.generate(status=status_str)
+            self.assertEqual(ack.status.value, status_str)
+            print(f"Generated ACK with status '{status_str}'")
+        
+        # Test with specific direction
+        for direction_str in ["buy", "sell"]:
+            ack = ThalexAck.generate(direction=direction_str)
+            self.assertEqual(ack.direction.value, direction_str)
+            print(f"Generated ACK with direction '{direction_str}'")
+        
+    def test_generate_multiple(self):
+        """Test generating multiple instances with different statuses"""
+        # Generate multiple ACKs and count how many of each status we get
+        status_counts = {status.value: 0 for status in OrderStatus}
+        direction_counts = {direction.value: 0 for direction in OrderSide}
+        
+        num_iterations = 100
+        for _ in range(num_iterations):
+            ack = ThalexAck.generate()
+            status_counts[ack.status.value] += 1
+            direction_counts[ack.direction.value] += 1
+        
+        print(f"\nDistribution after {num_iterations} generations:")
+        print("Status distribution:")
+        for status, count in status_counts.items():
+            print(f"  {status}: {count} ({count/num_iterations*100:.1f}%)")
+        
+        print("Direction distribution:")
+        for direction, count in direction_counts.items():
+            print(f"  {direction}: {count} ({count/num_iterations*100:.1f}%)")
+
+if __name__ == "__main__":
+    print("\n=== Testing ThalexAck.generate() functionality ===\n")
+    unittest.main(verbosity=2)

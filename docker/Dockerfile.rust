@@ -1,0 +1,60 @@
+FROM rust:slim as builder
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    build-essential \
+    cmake \
+    libclang-dev \
+    librdkafka-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a new empty project
+WORKDIR /app
+
+# Copy only Cargo.toml first to cache dependencies
+COPY rust_tradingengine/Cargo.toml ./
+
+# Create a dummy main.rs to build dependencies
+RUN mkdir -p src && \
+    echo "fn main() {println!(\"Dummy\");}" > src/main.rs && \
+    cargo build --release && \
+    rm -rf src target/release/deps/cryptics_lab_bot* target/release/cryptics_lab_bot*
+
+# Now copy the real source code
+COPY rust_tradingengine/src/ ./src/
+COPY .env ./
+
+# Add build timestamp as build arg for cache busting when needed
+ARG BUILD_DATE=unknown
+RUN echo "Build date: ${BUILD_DATE}"
+
+# Build application with release profile
+RUN cargo build --release
+
+# Runtime stage
+FROM debian:12-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    libssl3 \
+    ca-certificates \
+    librdkafka1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create directory structure matching local dev
+WORKDIR /app/rust_tradingengine
+
+# Copy the binary from the builder stage
+COPY --from=builder /app/target/release/cryptics_lab_bot ./cryptics_lab_bot
+# Copy the .env file to parent dir
+COPY .env /app/.env
+# Copy the config file to parent dir and modify it for Docker use
+COPY config.toml /app/config.toml
+RUN sed -i 's/rust_running_in_docker = false/rust_running_in_docker = true/' /app/config.toml
+# Copy schemas directory to parent dir
+COPY schemas/ /app/schemas/
+
+# Set the startup command
+CMD ["./cryptics_lab_bot"]

@@ -1,0 +1,34 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv for faster package installation
+RUN pip install uv
+
+# Copy the entire package directory first
+COPY python_pipeline/ /app/python_pipeline/
+COPY config.toml /app/config.toml
+COPY schemas/ /app/schemas/
+
+# Use BuildKit cache mount to speed up builds and save packages
+RUN --mount=type=cache,target=/root/.cache \
+    cd /app/python_pipeline && \
+    uv pip install -e .
+
+# Make sure the Python path is set correctly
+ENV PYTHONUNBUFFERED=1
+ENV python_running_in_docker=true
+
+# Add health check
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:8000/health || exit 1
+
+# Command to run when container starts
+CMD ["python", "-m", "python_pipeline.main"]
+

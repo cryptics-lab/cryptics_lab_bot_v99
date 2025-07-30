@@ -19,7 +19,7 @@ class PriceIndex(ModelBase):
     model_name: ClassVar[str] = "Index"
     
     # Field names that match the v2.avsc schema
-    symbol: str = Field(..., description="Index name (BTCUSD)")
+    index_name: str = Field(..., description="Index name (BTCUSD)")
     price: float = Field(..., description="Index price")
     timestamp: float = Field(..., description="Index timestamp")
     
@@ -43,7 +43,7 @@ class PriceIndex(ModelBase):
     def generate(cls, index_name="BTCUSD") -> 'PriceIndex':
         """Generate a sample price index based on actual Thalex data"""
         instance = cls(
-            symbol=index_name,
+            index_name=index_name,
             price=random.uniform(95000, 97000),
             timestamp=datetime.datetime.now().timestamp()
         )
@@ -53,12 +53,12 @@ class PriceIndex(ModelBase):
     
     # Add an alias property for backward compatibility
     @property 
-    def index_name(self) -> str:
-        return self.symbol
+    def symbol(self) -> str:
+        return self.index_name
     
-    @index_name.setter
-    def index_name(self, value: str):
-        self.symbol = value
+    @symbol.setter
+    def symbol(self, value: str):
+        self.index_name = value
 
 
 # Create an alias for consistency in naming

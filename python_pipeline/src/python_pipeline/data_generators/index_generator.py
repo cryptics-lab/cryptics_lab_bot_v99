@@ -17,7 +17,7 @@ class IndexGenerator(BaseDataGenerator):
         index_name = kwargs.get('index_name', 'BTCUSD')
         
         instance = PriceIndex(
-            symbol=index_name,
+            index_name=index_name,
             price=random.uniform(95000, 97000),
             timestamp=datetime.datetime.now().timestamp()
         )

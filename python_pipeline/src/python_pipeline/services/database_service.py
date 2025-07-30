@@ -43,8 +43,12 @@ class DatabaseService:
         self.clear_tables = self.pipeline_config.get('clear_tables', False)
         
         # Get migrations directory
-        project_root = Path(__file__).parent.parent.parent
-        self.migrations_dir = os.path.join(project_root, "migrations")
+        # In Docker, migrations are at /app/migrations
+        if os.environ.get('python_running_in_docker', 'false').lower() == 'true':
+            self.migrations_dir = "/app/migrations"
+        else:
+            project_root = Path(__file__).parent.parent.parent.parent.parent
+            self.migrations_dir = os.path.join(project_root, "migrations")
         
         # Run migrations if configured
         self.run_migrations = self.pipeline_config.get('run_migrations', True)

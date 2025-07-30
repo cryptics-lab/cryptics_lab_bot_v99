@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "Index",
+  "namespace": "exchange.market",
+  "fields": [
+    {"name": "index_name", "type": "string"},
+    {"name": "price", "type": "double"},
+    {"name": "timestamp", "type": "double"},
+    {"name": "expiration_print_average", "type": ["null", "double"], "default": null},
+    {"name": "expiration_progress", "type": ["null", "double"], "default": null},
+    {"name": "expected_expiration_price", "type": ["null", "double"], "default": null},
+    {"name": "previous_settlement_price", "type": ["null", "double"], "default": null},
+    {"name": "processing_timestamp", "type": ["null", "double"], "default": null}
+  ]
+}

@@ -34,7 +34,7 @@ class AckProducer(AvroProducerBase):
         # Decide whether to create a new order or update an existing one
         if not self.orders or random.random() < 0.7:  # 70% chance to create new order
             # Generate new order Ack using the data generator
-            ack = self.data_generator.generate(status="OPEN")
+            ack = self.data_generator.generate(status=OrderStatus.OPEN)
             
             # Store order
             self.orders[ack.order_id] = {
@@ -60,16 +60,16 @@ class AckProducer(AvroProducerBase):
             
             if order["status"] == OrderStatus.OPEN:
                 if random.random() < 0.3:  # 30% chance to cancel
-                    new_status = "CANCELLED"
+                    new_status = OrderStatus.CANCELLED
                     order["filled"] = 0
                 else:  # 70% chance to partially fill
-                    new_status = "PARTIALLY_FILLED"
+                    new_status = OrderStatus.PARTIALLY_FILLED
                     order["filled"] = order["amount"] * random.uniform(0.1, 0.5)
             elif order["status"] == OrderStatus.PARTIALLY_FILLED:
                 if random.random() < 0.3:  # 30% chance to cancel
-                    new_status = "CANCELLED_PARTIALLY_FILLED"
+                    new_status = OrderStatus.CANCELLED_PARTIALLY_FILLED
                 else:  # 70% chance to fill completely
-                    new_status = "FILLED"
+                    new_status = OrderStatus.FILLED
                     order["filled"] = order["amount"]
             else:
                 # Order already in terminal state, skip update
@@ -87,11 +87,11 @@ class AckProducer(AvroProducerBase):
             ack.amount = order["amount"]
             ack.filled_amount = order["filled"]
             
-            if new_status in ["CANCELLED", "CANCELLED_PARTIALLY_FILLED"]:
+            if new_status in [OrderStatus.CANCELLED, OrderStatus.CANCELLED_PARTIALLY_FILLED]:
                 ack.remaining_amount = 0
-            elif new_status == "PARTIALLY_FILLED":
+            elif new_status == OrderStatus.PARTIALLY_FILLED:
                 ack.remaining_amount = ack.amount - ack.filled_amount
-            elif new_status == "FILLED":
+            elif new_status == OrderStatus.FILLED:
                 ack.remaining_amount = 0
             
             # Update order state

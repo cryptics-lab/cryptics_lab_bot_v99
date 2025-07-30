@@ -29,6 +29,7 @@ jsonwebtoken = "8.3"
 # Kafka 
 rdkafka = { version = "0.36", default-features = false, features = ["tokio"] }
 schema_registry_converter = { version = "4.4.0", features = ["avro"] }
+# Changed this back to 0.18 for compatibility with schema_registry_converter
 apache-avro = "0.18"
 
 

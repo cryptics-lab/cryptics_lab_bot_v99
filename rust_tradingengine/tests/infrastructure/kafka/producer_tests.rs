@@ -3,7 +3,6 @@ use anyhow::Result;
 use serde_json::json;
 
 use cryptics_lab_bot::domain::model::ticker::Ticker;
-use cryptics_lab_bot::domain::model::trade::Trade;
 use cryptics_lab_bot::infrastructure::kafka::helper::AvroConverter;
 use cryptics_lab_bot::infrastructure::exchange::thalex::parsers::ThaleParser;
 
@@ -35,13 +34,14 @@ fn test_ticker_to_avro_fields() -> Result<()> {
         realised_funding_24h: 0.0003,
         average_funding_rate_24h: 0.0002,
         open_interest: 500.0,
+        processing_timestamp: Some(1645543210.456),
     };
     
     // Test that we can convert the ticker to Avro fields without error
     let avro_fields = AvroConverter::ticker_to_avro_value(&ticker)?;
     
     // Verify the fields exist and have the right values
-    assert_eq!(avro_fields.len(), 23); // Ensure all fields are included
+    assert_eq!(avro_fields.len(), 24); // Ensure all fields are included (including processing_timestamp)
     
     // Check some of the key fields
     let field_map: HashMap<_, _> = avro_fields.iter().cloned().collect();
@@ -101,7 +101,7 @@ fn test_trade_from_json() -> Result<()> {
     let avro_fields = AvroConverter::trade_to_avro_value(&trade)?;
     
     // Verify all fields are present
-    assert_eq!(avro_fields.len(), 8); // Ensure all fields are included
+    assert_eq!(avro_fields.len(), 9); // Ensure all fields are included (including processing_timestamp)
     
     // Check some key fields
     let field_map: HashMap<_, _> = avro_fields.iter().cloned().collect();

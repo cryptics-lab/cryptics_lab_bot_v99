@@ -123,11 +123,11 @@ async fn ack_string_test() -> Result<()> {
     println!("2. Test data: {}", serde_json::to_string_pretty(&ack_json)?);
     
     // Custom processing of floating-point numbers to address serialization issues
-    let amount_str = format!("{}", ack_message.amount);
-    let create_time_str = format!("{}", ack_message.create_time);
-    let filled_amount_str = format!("{}", ack_message.filled_amount);
-    let price_str = format!("{}", ack_message.price);
-    let remaining_amount_str = format!("{}", ack_message.remaining_amount);
+    let _amount_str = format!("{}", ack_message.amount);
+    let _create_time_str = format!("{}", ack_message.create_time);
+    let _filled_amount_str = format!("{}", ack_message.filled_amount);
+    let _price_str = format!("{}", ack_message.price);
+    let _remaining_amount_str = format!("{}", ack_message.remaining_amount);
     
     // Build custom JSON that avoids problematic float serialization
     let manual_json = json!({

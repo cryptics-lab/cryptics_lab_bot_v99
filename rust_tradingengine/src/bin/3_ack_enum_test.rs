@@ -8,18 +8,12 @@ use rdkafka::consumer::{Consumer, StreamConsumer};
 use rdkafka::{ClientConfig, Message, TopicPartitionList};
 use rdkafka::config::RDKafkaLogLevel;
 use std::time::Duration;
-use std::io::Cursor;
-
 // Import the Apache Avro crate
 use apache_avro::{
     types::Value as AvroValue,
     Schema,
     Reader, Writer,
-    to_avro_datum, from_avro_datum,
-    Codec,
 };
-use schema_registry_converter::async_impl::schema_registry::SrSettings;
-use schema_registry_converter::schema_registry_common::SubjectNameStrategy;
 
 // Import the enums from the domain
 use cryptics_lab_bot::domain::enums::{OrderSide, OrderStatus};

@@ -6,7 +6,7 @@ use std::time::Duration;
 use chrono;
 
 use rdkafka::consumer::{Consumer, StreamConsumer};
-use rdkafka::{ClientConfig, Message, TopicPartitionList};
+use rdkafka::{ClientConfig, Message};
 use rdkafka::config::RDKafkaLogLevel;
 
 use apache_avro::{Schema, Reader};
@@ -30,7 +30,7 @@ async fn existing_ticker_topic_test() -> Result<()> {
     topics.insert("ticker".to_string(), existing_ticker_topic.to_string());
     
     // Initialize schema helper to verify schemas
-    let schema_helper = SchemaHelper::new(schema_dir.to_string());
+    let _schema_helper = SchemaHelper::new(schema_dir.to_string());
     println!("1. Schema helper initialized");
     
     // Create sample JSON data for ticker (using data from error logs)

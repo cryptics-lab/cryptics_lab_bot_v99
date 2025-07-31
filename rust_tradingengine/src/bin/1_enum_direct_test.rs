@@ -1,11 +1,10 @@
 use anyhow::{anyhow, Result};
-use std::fs;
 use serde::{Serialize, Deserialize};
 use serde_json::json;
 use tokio;
 use reqwest;
 use rdkafka::producer::{FutureProducer, FutureRecord};
-use rdkafka::consumer::{Consumer, StreamConsumer, DefaultConsumerContext};
+use rdkafka::consumer::{Consumer, StreamConsumer};
 use rdkafka::{ClientConfig, Message, TopicPartitionList};
 use rdkafka::config::RDKafkaLogLevel;
 use schema_registry_converter::async_impl::avro::AvroEncoder;

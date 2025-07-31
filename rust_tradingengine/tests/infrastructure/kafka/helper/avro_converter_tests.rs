@@ -130,13 +130,14 @@ fn test_ack_to_avro_value() {
         insert_reason: Some("new_order".to_string()),
         create_time: 1645543210.123,
         persistent: true,
+        processing_timestamp: Some(1645543210.456),
     };
     
     // Convert to Avro value
     let avro_fields = AvroConverter::ack_to_avro_value(&ack);
     
     // Verify all fields are present and have correct types
-    assert_eq!(avro_fields.len(), 16); // There are 16 fields in the Ack struct and implementation
+    assert_eq!(avro_fields.len(), 17); // There are 17 fields in the Ack struct and implementation (including processing_timestamp)
     
     // Verify specific fields and their values
     for (field_name, field_value) in &avro_fields {
@@ -211,13 +212,14 @@ fn test_trade_to_avro_value() {
         amount: 0.25,
         maker_taker: "maker".to_string(),
         time: 1645543210.123,
+        processing_timestamp: Some(1645543210.456),
     };
     
     // Convert to Avro value
     let avro_fields = AvroConverter::trade_to_avro_value(&trade).unwrap();
     
     // Verify all fields are present
-    assert_eq!(avro_fields.len(), 8); // Ensure all fields are included
+    assert_eq!(avro_fields.len(), 9); // Ensure all fields are included (including processing_timestamp)
     
     // Verify specific fields and their values
     for (field_name, field_value) in &avro_fields {
@@ -272,6 +274,7 @@ fn test_trade_to_avro_value() {
         amount: 0.1,
         maker_taker: "taker".to_string(),
         time: 1645543210.123,
+        processing_timestamp: Some(1645543210.789),
     };
     
     let avro_fields = AvroConverter::trade_to_avro_value(&trade_without_client_id).unwrap();
@@ -319,13 +322,14 @@ fn test_ticker_to_avro_value() {
         realised_funding_24h: 0.0003,
         average_funding_rate_24h: 0.0002,
         open_interest: 500.0,
+        processing_timestamp: Some(1645543210.456),
     };
     
     // Convert to Avro value
     let avro_fields = AvroConverter::ticker_to_avro_value(&ticker).unwrap();
     
     // Verify all fields are present
-    assert_eq!(avro_fields.len(), 23); // Ensure all fields are included
+    assert_eq!(avro_fields.len(), 24); // Ensure all fields are included (including processing_timestamp)
     
     // Verify specific fields and their values
     for (field_name, field_value) in &avro_fields {

@@ -1,5 +1,4 @@
 use anyhow::{anyhow, Result};
-use serde::{Serialize, Deserialize};
 use serde_json::json;
 use tokio;
 use reqwest;

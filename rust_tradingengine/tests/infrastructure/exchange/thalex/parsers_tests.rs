@@ -148,6 +148,7 @@ fn test_parse_ticker_json() -> Result<()> {
         realised_funding_24h: 0.0003,
         average_funding_rate_24h: 0.0002,
         open_interest: 500.0,
+        processing_timestamp: Some(1645543210.456),
     };
     
     // Parse the ticker to JSON
@@ -163,8 +164,8 @@ fn test_parse_ticker_json() -> Result<()> {
     assert_eq!(ticker_json["open_interest"], 500.0);
     
     // Ensure the JSON has the expected number of fields
-    // The parser only extracts a subset of fields for the API payload
-    assert_eq!(ticker_json.as_object().unwrap().len(), 7);
+    // The parser only extracts a subset of fields for the API payload (including processing_timestamp)
+    assert_eq!(ticker_json.as_object().unwrap().len(), 8);
     
     Ok(())
 }
@@ -363,6 +364,7 @@ fn test_trade_to_json() {
         amount: 0.1,
         maker_taker: "maker".to_string(),
         time: 1645543210.123,
+        processing_timestamp: Some(1645543210.456),
     };
     
     // Convert to JSON
@@ -388,6 +390,7 @@ fn test_trade_to_json() {
         amount: 0.5,
         maker_taker: "taker".to_string(),
         time: 1645543220.456,
+        processing_timestamp: Some(1645543220.789),
     };
     
     let json_without_client_id = ThaleParser::trade_to_json(&trade_without_client_id);

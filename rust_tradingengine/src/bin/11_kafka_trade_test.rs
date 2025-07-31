@@ -30,7 +30,7 @@ async fn kafka_trade_test() -> Result<()> {
     topics.insert("ack".to_string(), format!("{}.ack", topic_prefix));
     
     // Initialize schema helper to verify schemas
-    let schema_helper = SchemaHelper::new(schema_dir.to_string());
+    let _schema_helper = SchemaHelper::new(schema_dir.to_string());
     println!("1. Schema helper initialized");
     
     // Create sample JSON data for a direct trade

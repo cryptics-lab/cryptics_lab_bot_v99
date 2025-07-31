@@ -1,0 +1,128 @@
+{
+  "type": "record",
+  "name": "ThalexTicker",
+  "namespace": "com.cryptics.avro",
+  "fields": [
+    {
+      "name": "instrument_name",
+      "type": "string",
+      "doc": "Instrument name"
+    },
+    {
+      "name": "mark_price",
+      "type": "double",
+      "doc": "Mark price"
+    },
+    {
+      "name": "mark_timestamp",
+      "type": "double",
+      "doc": "Mark timestamp"
+    },
+    {
+      "name": "best_bid_price",
+      "type": "double",
+      "doc": "Best bid price"
+    },
+    {
+      "name": "best_bid_amount",
+      "type": "double",
+      "doc": "Best bid amount"
+    },
+    {
+      "name": "best_ask_price",
+      "type": "double",
+      "doc": "Best ask price"
+    },
+    {
+      "name": "best_ask_amount",
+      "type": "double",
+      "doc": "Best ask amount"
+    },
+    {
+      "name": "last_price",
+      "type": "double",
+      "doc": "Last traded price"
+    },
+    {
+      "name": "delta",
+      "type": "double",
+      "doc": "Delta"
+    },
+    {
+      "name": "volume_24h",
+      "type": "double",
+      "doc": "24-hour volume"
+    },
+    {
+      "name": "value_24h",
+      "type": "double",
+      "doc": "24-hour value"
+    },
+    {
+      "name": "low_price_24h",
+      "type": "double",
+      "doc": "24-hour low price"
+    },
+    {
+      "name": "high_price_24h",
+      "type": "double",
+      "doc": "24-hour high price"
+    },
+    {
+      "name": "change_24h",
+      "type": "double",
+      "doc": "24-hour price change"
+    },
+    {
+      "name": "index_price",
+      "type": "double",
+      "doc": "Index price"
+    },
+    {
+      "name": "forward",
+      "type": "double",
+      "doc": "Forward price"
+    },
+    {
+      "name": "funding_mark",
+      "type": "double",
+      "doc": "Funding mark"
+    },
+    {
+      "name": "funding_rate",
+      "type": "double",
+      "doc": "Funding rate"
+    },
+    {
+      "name": "collar_low",
+      "type": "double",
+      "doc": "Collar low"
+    },
+    {
+      "name": "collar_high",
+      "type": "double",
+      "doc": "Collar high"
+    },
+    {
+      "name": "realised_funding_24h",
+      "type": "double",
+      "doc": "24-hour realized funding"
+    },
+    {
+      "name": "average_funding_rate_24h",
+      "type": "double",
+      "doc": "24-hour average funding rate"
+    },
+    {
+      "name": "open_interest",
+      "type": "double",
+      "doc": "Open interest"
+    },
+    {
+      "name": "processing_timestamp",
+      "type": ["null", "double"],
+      "default": null,
+      "doc": "Timestamp when record was processed by Rust system (seconds since epoch)"
+    }
+  ]
+}

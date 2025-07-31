@@ -1,0 +1,51 @@
+{
+  "type": "record",
+  "name": "ThalexTrade",
+  "namespace": "com.cryptics.avro",
+  "fields": [
+    {
+      "name": "trade_id",
+      "type": "string",
+      "doc": "Unique trade identifier"
+    },
+    {
+      "name": "order_id",
+      "type": "string",
+      "doc": "Exchange order ID"
+    },
+    {
+      "name": "client_order_id",
+      "type": [
+        "null",
+        "int"
+      ],
+      "doc": "Client order ID",
+      "default": null
+    },
+    {
+      "name": "instrument_name",
+      "type": "string",
+      "doc": "Instrument name"
+    },
+    {
+      "name": "price",
+      "type": "double",
+      "doc": "Trade execution price"
+    },
+    {
+      "name": "amount",
+      "type": "double",
+      "doc": "Trade execution amount"
+    },
+    {
+      "name": "maker_taker",
+      "type": "string",
+      "doc": "Maker or taker role"
+    },
+    {
+      "name": "time",
+      "type": "double",
+      "doc": "Trade timestamp"
+    }
+  ]
+}

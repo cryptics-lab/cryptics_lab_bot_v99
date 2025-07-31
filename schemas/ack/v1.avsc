@@ -1,0 +1,23 @@
+{
+  "type": "record",
+  "name": "Ack",
+  "namespace": "exchange.order",
+  "fields": [
+    {"name": "order_id", "type": "string"},
+    {"name": "client_order_id", "type": ["null", "long"]},
+    {"name": "instrument_name", "type": "string"},
+    {"name": "direction", "type": {"type": "enum", "name": "OrderSide", "symbols": ["buy", "sell"]}},
+    {"name": "price", "type": ["null", "double"]},
+    {"name": "amount", "type": "double"},
+    {"name": "filled_amount", "type": "double"},
+    {"name": "remaining_amount", "type": "double"},
+    {"name": "status", "type": {"type": "enum", "name": "OrderStatus", "symbols": ["open", "partially_filled", "cancelled", "cancelled_partially_filled", "filled"]}},
+    {"name": "order_type", "type": {"type": "enum", "name": "OrderType", "symbols": ["limit", "market"]}},
+    {"name": "time_in_force", "type": {"type": "enum", "name": "TimeInForce", "symbols": ["good_till_cancelled", "immediate_or_cancel"]}},
+    {"name": "change_reason", "type": "string"},
+    {"name": "delete_reason", "type": ["null", "string"]},
+    {"name": "insert_reason", "type": ["null", "string"]},
+    {"name": "create_time", "type": "double"},
+    {"name": "persistent", "type": "boolean"}
+  ]
+}

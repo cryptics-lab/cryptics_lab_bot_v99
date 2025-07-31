@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "name": "ThalexIndex",
+  "namespace": "cryptics.thalex",
+  "fields": [
+    {"name": "symbol", "type": "string"},
+    {"name": "price", "type": "double"},
+    {"name": "timestamp", "type": "double"}
+  ]
+}
